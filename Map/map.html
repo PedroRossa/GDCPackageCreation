@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>map</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
+    <!-- CSS -->
+  <!-- Add Material font (Roboto) and Material icon as needed -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Add Material CSS, replace Bootstrap CSS -->
+  <link href="../material.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+  <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <i class="material-icons mr-2" width="30" height="30" class="d-inline-block align-top" alt="">explore</i>
+      GDC Package Creation
+    </a>
+  </nav>
+
+  <div class="container">
+      <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <div class="floating-label">
+                    <label for="inpPackageName">Package Name</label>
+                    <input class="form-control" id="inpPackageName" placeholder="Set the Package Name" type="text">
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="floating-label">
+                            <label for="inpLatitude">Latitude</label>
+                            <input class="form-control" id="inpLatitude" placeholder="" type="text" disabled>
+                        </div>
+                    </div> 
+                    <div class="col">
+                        <div class="floating-label">
+                            <label for="inpLongitude">Longitude</label>
+                            <input class="form-control" id="inpLongitude" placeholder="" type="text" disabled>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="card text-center mt-3">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs" id="ElementsTab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="tabSamples" data-toggle="tab" href="#tabSamplesContent" role="tab" aria-controls="Samples" aria-selected="true">Samples</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="tabPanoramics" data-toggle="tab" href="#tabPanoramicsContent" role="tab" aria-controls="Panoramics" aria-selected="false">Panoramics</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="tabOthers" data-toggle="tab" href="#tabOthersContent" role="tab" aria-controls="Others" aria-selected="false">Others</a>
+                            </li>
+                          </ul>
+                          <div class="tab-content" id="ElementsTabContent">
+                            <div class="tab-pane fade show active" id="tabSamplesContent" role="tabpanel" aria-labelledby="Samples-tab">
+                                <div class="card-body">
+                                    <h5 class="card-title">Add Samples to package</h5><table class="table table-sm">
+                                        <thead>
+                                          <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Relative Path</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <th scope="row">1</th>
+                                            <td>Sample 1</td>
+                                            <td>limestone sample</td>
+                                            <td>samples/limestone</td>
+                                          </tr>
+                                          <tr>
+                                            <th scope="row">2</th>
+                                            <td>My sample</td>
+                                            <td>arenite</td>
+                                            <td>samples/mySample</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    <a href="#" class="btn btn-primary">Add</a>
+                                  </div>
+                            </div>
+                            <div class="tab-pane fade" id="tabPanoramicsContent" role="tabpanel" aria-labelledby="Panoramics-tab">
+                                <div class="card-body">
+                                    <h5 class="card-title">Add Panoramic images (360) to package</h5>
+                                    <a href="#" class="btn btn-primary">Add</a>
+                                  </div>
+                            </div>
+                            <div class="tab-pane fade" id="tabOthersContent" role="tabpanel" aria-labelledby="Others-tab">
+                                <div class="card-body">
+                                    <h5 class="card-title">Add Other type of files to package</h5>
+                                    <a href="#" class="btn btn-primary">Add</a>
+                                  </div>
+                            </div>
+                          </div>
+                    </div>
+                  </div>
+              </div>
+        </div>
+        <div class="col">
+            <div id="map" style="width: 500px; height: 300px;" class="mt-2 ml-2"></div>
+            <p class="text-center">Select package location here!</p>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col">
+            
+          </div>
+          <div class="col text-center">
+          </div>
+      </div>
+    </div>
+
+    
+
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content" class="card">
+            <div class="card-body">
+              This is some text within a card body.
+            </div>
+          </div>
+    </div>
+ 
+ 
+ <script type="text/javascript">
+    var map = new ol.Map({
+      target: 'map',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        })
+      ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([-51.1, -29.5]),
+        zoom: 4
+      })
+    });
+
+    var layer = new ol.layer.Vector({
+     source: new ol.source.Vector({
+         features: [
+             new ol.Feature({
+                 geometry: new ol.geom.Point(ol.proj.fromLonLat([-51.1, -29.5]))
+             })
+         ]
+     })
+ });
+ map.addLayer(layer);
+
+ var container = document.getElementById('popup');
+ var content = document.getElementById('popup-content');
+ var closer = document.getElementById('popup-closer');
+
+ var overlay = new ol.Overlay({
+     element: container,
+     autoPan: true,
+     autoPanAnimation: {
+         duration: 250
+     }
+ });
+ map.addOverlay(overlay);
+
+ closer.onclick = function() {
+     overlay.setPosition(undefined);
+     closer.blur();
+     return false;
+ };
+
+ map.on('singleclick', function (event) {
+     if (map.hasFeatureAtPixel(event.pixel) === true) {
+         var coordinate = event.coordinate;
+
+         overlay.setPosition(coordinate);
+     } else {
+         overlay.setPosition(undefined);
+         closer.blur();
+     }
+ });
+  </script>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+  <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
+  <script src="../material.min.js"></script>
+</body>
+
+</html>
