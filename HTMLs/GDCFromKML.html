@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Create new GDC</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
+    <!-- CSS -->
+  <!-- Add Material font (Roboto) and Material icon as needed -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Add Material CSS, replace Bootstrap CSS -->
+  <link href="../material.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+  <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <i class="material-icons mr-2" width="30" height="30" class="d-inline-block align-top" alt="">explore</i>
+      GDC Package Creation
+    </a>
+  </nav>
+
+  <div class="container">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">KML File</span>
+        </div>
+        <div class="custom-file">
+          <input type="file" class="custom-file-input"  accept=".kml,.kmz" id="inpOpenKml">
+          <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+        </div>
+        
+<input type='button' id='btnLoad' value='Load' onclick='openFile();'>
+    </div>
+
+    <div class="card text-center mt-3">
+      <div class="card-header">
+        <div class="card-body">
+          <h5 class="card-title">Placemarks from KML</h5>
+          <table id="kmlTable" class="table table-sm">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Type</th>
+                <th scope="col">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left">Sample 1</td>
+                <td class="text-left">limestone sample</td>
+                <td>
+                  <select class="custom-select" id="inpType">
+                    <option selected>Other</option>
+                    <option value="1">Sample</option>
+                    <option value="2">Panoramic</option>
+                    <option value="3">Route</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="checkbox" name="remove">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" onclick="addElementOnTable()">Add Element</button>
+          <button type="button" onclick="removeElementOnTable()">Remove selected</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+  <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
+  <script src="../material.min.js"></script>
+
+  <script src="../Scripts/GDCFromKML.js"></script>
+</body>
+
+</html>
