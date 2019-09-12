@@ -6,16 +6,36 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta content="initial-scale=1, shrink-to-fit=no, width=device-width" name="viewport">
-    <!-- CSS -->
+  <!-- CSS -->
   <!-- Add Material font (Roboto) and Material icon as needed -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700"
+  <link
+    href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i|Roboto+Mono:300,400,700|Roboto+Slab:300,400,700"
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style type="text/css">
+    /*Rules for sizing the icon*/
+    .material-icons.md-18 {
+      font-size: 18px;
+    }
+
+    .material-icons.md-24 {
+      font-size: 24px;
+    }
+
+    .material-icons.md-36 {
+      font-size: 36px;
+    }
+
+    .material-icons.md-48 {
+      font-size: 48px;
+    }
+  </style>
 
   <!-- Add Material CSS, replace Bootstrap CSS -->
   <link href="../material.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css" type="text/css">
+  <link rel="stylesheet" href="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/css/ol.css"
+    type="text/css">
   <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
 
 </head>
@@ -23,124 +43,262 @@
 <body>
   <nav class="navbar navbar-light bg-light">
     <a class="navbar-brand" href="#">
-        <i class="material-icons mr-2" width="30" height="30" class="d-inline-block align-top" alt="">explore</i>
+      <i class="material-icons mr-2" width="30" height="30" class="d-inline-block align-top" alt="">explore</i>
       GDC Package Creation
     </a>
   </nav>
 
   <div class="container">
-      <div class="row">
-        <div class="col">
-            <div class="form-group">
-                <div class="floating-label">
-                    <label for="inpPackageName">Package Name</label>
-                    <input class="form-control" id="inpPackageName" placeholder="Set the Package Name" type="text">
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <div class="floating-label">
+            <label for="inpPackageName">Package Name</label>
+            <input class="form-control" id="inpPackageName" placeholder="Set the Package Name" type="text">
+          </div>
+          <div class="row mt-3">
+            <div class="col">
+              <div class="floating-label">
+                <label for="inpPackageLatitude">Latitude</label>
+                <input class="form-control" id="inpLatitude" placeholder="" type="text" disabled>
+              </div>
+            </div>
+            <div class="col">
+              <div class="floating-label">
+                <label for="inpPackageLongitude">Longitude</label>
+                <input class="form-control" id="inpLongitude" placeholder="" type="text" disabled>
+              </div>
+            </div>
+            <div class="col">
+              <!-- Button trigger modal -->
+              <i class="material-icons mt-4 text-center" data-toggle="modal" data-target="#mapModal" alt="">
+                room
+              </i>
+            </div>
+          </div>
+          <div class="card text-center mt-3">
+            <div class="card-header">
+              <ul class="nav nav-tabs" id="ElementsTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="tabSamples" data-toggle="tab" href="#tabSamplesContent" role="tab"
+                    aria-controls="Samples" aria-selected="true">Samples</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="tabPanoramics" data-toggle="tab" href="#tabPanoramicsContent" role="tab"
+                    aria-controls="Panoramics" aria-selected="false">Panoramics</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="tabOthers" data-toggle="tab" href="#tabOthersContent" role="tab"
+                    aria-controls="Others" aria-selected="false">Others</a>
+                </li>
+              </ul>
+              <!-- Elements -->
+              <div class="tab-content" id="ElementsTabContent">
+                <!-- Samples -->
+                <div class="tab-pane fade show active" id="tabSamplesContent" role="tabpanel"
+                  aria-labelledby="Samples-tab">
+                  <div class="card-body">
+                    <h5 class="card-title">Add Samples to package</h5>
+                    <table id="samplesTable" class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">Latitude</th>
+                          <th scope="col">Longitude</th>
+                          <th scope="col">File</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                    <!-- ADD Sample Modal Loaded -->
+                    <button id="btnAddSample" class="btn btn-float  btn-primary float-right" type="button"
+                      data-toggle="modal" data-target="#addElementModal"
+                      onclick="setCurrentGdcType(gdcTypeEnum.SAMPLE)">
+                      <i class="material-icons">add</i>
+                    </button>
+                  </div>
                 </div>
-                <div class="row mt-3">
-                    <div class="col">
-                        <div class="floating-label">
-                            <label for="inpLatitude">Latitude</label>
-                            <input class="form-control" id="inpLatitude" placeholder="" type="text" disabled>
-                        </div>
-                    </div> 
-                    <div class="col">
-                        <div class="floating-label">
-                            <label for="inpLongitude">Longitude</label>
-                            <input class="form-control" id="inpLongitude" placeholder="" type="text" disabled>
-                        </div>
-                    </div>
-                    <div class="col">
-                      <!-- Button trigger modal -->
-                      <i class="material-icons mt-4 text-center" data-toggle="modal" data-target="#mapModal" alt="">
-                       room
-                      </i>
-                  </div>  
+                <!-- Panoramics -->
+                <div class="tab-pane fade" id="tabPanoramicsContent" role="tabpanel" aria-labelledby="Panoramics-tab">
+                  <div class="card-body">
+                    <h5 class="card-title">Add Panoramic images (360) to package</h5>
+                    <table id="panoramicsTable" class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">Latitude</th>
+                          <th scope="col">Longitude</th>
+                          <th scope="col">File</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                    <!-- ADD Panoramic Modal Loaded -->
+                    <button id="btnAddPanoramic" class="btn btn-float  btn-primary float-right" type="button"
+                      data-toggle="modal" data-target="#addElementModal"
+                      onclick="setCurrentGdcType(gdcTypeEnum.PANORAMIC)">
+                      <i class="material-icons">add</i>
+                    </button>
+                  </div>
                 </div>
-                <div class="card text-center mt-3">
-                    <div class="card-header">
-                        <ul class="nav nav-tabs" id="ElementsTab" role="tablist">
-                            <li class="nav-item">
-                              <a class="nav-link active" id="tabSamples" data-toggle="tab" href="#tabSamplesContent" role="tab" aria-controls="Samples" aria-selected="true">Samples</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" id="tabPanoramics" data-toggle="tab" href="#tabPanoramicsContent" role="tab" aria-controls="Panoramics" aria-selected="false">Panoramics</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" id="tabOthers" data-toggle="tab" href="#tabOthersContent" role="tab" aria-controls="Others" aria-selected="false">Others</a>
-                            </li>
-                          </ul>
-                          <div class="tab-content" id="ElementsTabContent">
-                            <div class="tab-pane fade show active" id="tabSamplesContent" role="tabpanel" aria-labelledby="Samples-tab">
-                                <div class="card-body">
-                                    <h5 class="card-title">Add Samples to package</h5><table class="table table-sm">
-                                        <thead>
-                                          <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Description</th>
-                                            <th scope="col">Relative Path</th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr>
-                                            <th scope="row">1</th>
-                                            <td>Sample 1</td>
-                                            <td>limestone sample</td>
-                                            <td>samples/limestone</td>
-                                          </tr>
-                                          <tr>
-                                            <th scope="row">2</th>
-                                            <td>My sample</td>
-                                            <td>arenite</td>
-                                            <td>samples/mySample</td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    <a href="#" class="btn btn-primary">Add</a>
-                                  </div>
-                            </div>
-                            <div class="tab-pane fade" id="tabPanoramicsContent" role="tabpanel" aria-labelledby="Panoramics-tab">
-                                <div class="card-body">
-                                    <h5 class="card-title">Add Panoramic images (360) to package</h5>
-                                    <a href="#" class="btn btn-primary">Add</a>
-                                  </div>
-                            </div>
-                            <div class="tab-pane fade" id="tabOthersContent" role="tabpanel" aria-labelledby="Others-tab">
-                                <div class="card-body">
-                                    <h5 class="card-title">Add Other type of files to package</h5>
-                                    <a href="#" class="btn btn-primary">Add</a>
-                                  </div>
-                            </div>
-                          </div>
-                    </div>
+                <!-- Others -->
+                <div class="tab-pane fade" id="tabOthersContent" role="tabpanel" aria-labelledby="Others-tab">
+                  <div class="card-body">
+                    <h5 class="card-title">Add Other type of files to package</h5>
+                    <table id="othersTable" class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">Latitude</th>
+                          <th scope="col">Longitude</th>
+                          <th scope="col">File</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                    <!-- ADD Others Modal Loaded -->
+                    <button id="btnAddOthers" class="btn btn-float  btn-primary float-right" type="button"
+                      data-toggle="modal" data-target="#addElementModal" onclick="setCurrentGdcType(gdcTypeEnum.OTHER)">
+                      <i class="material-icons">add</i>
+                    </button>
+                  </div>
                 </div>
               </div>
-        </div>      
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary float-right" onclick="zipFiles()">Generate Package</button>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- Map Modal -->
-    <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="SelectOnMap" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="mapModalTitle">Select Location</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+  <!-- Map Modal -->
+  <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="SelectOnMap" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mapModalTitle">Select Location</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="map" style="width: 500px; height: 300px;" class="mt-2 ml-2"></div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Modal -->
+  <div class="modal fade" id="progressModal" tabindex="-1" role="dialog" aria-labelledby="GeneratingZip"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="progressModalTitle">Generating Zip</h5>
+        </div>
+        <div class="modal-body">
+          <p id="progressText"></p>
+          <div class="progress">
+            <div id="progressBarZip" class="progress-bar progress-bar-indeterminate" role="progressbar"
+              style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btnProgressModalOk" type="button" class="btn btn-primary" data-dismiss="modal"
+            disabled>Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Element Modal -->
+  <div class="modal fade" id="addElementModal" tabindex="-1" role="dialog" aria-labelledby="AddNewElement"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addElementModalTitle">Add New Element</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="floating-label">
+              <label for="inpPackageName">Name</label>
+              <input class="form-control" id="inpElementName" placeholder="Set Element Name" type="text">
             </div>
-            <div class="modal-body">
-                <div id="map" style="width: 500px; height: 300px;" class="mt-2 ml-2"></div>
+            <div class="floating-label">
+              <label for="inpPackageName">Description</label>
+              <input class="form-control" id="inpElementDescription" placeholder="Set Element Description" type="text">
             </div>
-            <div class="modal-footer">
-              <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button> -->
-              <button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
+            <div class="row mt-3">
+              <div class="col">
+                <div class="floating-label">
+                  <label for="inpLatitude">Latitude</label>
+                  <input class="form-control" id="inpElementLatitude" placeholder="" type="number">
+                </div>
+              </div>
+              <div class="col">
+                <div class="floating-label">
+                  <label for="inpLongitude">Longitude</label>
+                  <input class="form-control" id="inpElementLongitude" placeholder="" type="number" required>
+                </div>
+              </div>
             </div>
+          </div>
+          <div id="drop_zone" class="mt-3" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+            <div class="card">
+              <div class="card-body">
+                <div id="DragDropDiv">
+                  <div class="row justify-content-center mt-3">
+                    <i class="material-icons text-primary md-48">cloud_upload</i>
+                  </div>
+                  <div class=" row justify-content-center mt-3">
+                    <p class="font-weight-bold"> Drag and drop a file Here</p>
+                  </div>
+                  <br />
+                  <div class=" row justify-content-center">
+                    <p class="font-italic">or</p>
+                  </div>
+                  <div class="row justify-content-center my-3 mx-4">
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="customFile">
+                      <label class="custom-file-label" for="customFile">Browse File</label>
+                    </div>
+                  </div>
+                </div>
+                <div id="DropedFileDiv" class="text-center align-middle" style="display: none;">
+                  <a class="chip chip-action" href="#">
+                    <i class="chip-icon">Z</i>
+                    <p id="elementSelectedFileName" class="text-center">FileNameHere.zip</p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button id="btnSaveElementModal" type="button" class="btn btn-primary"
+              onclick="saveGDCElement()">Save</button>
           </div>
         </div>
       </div>
-  
-    <!-- Optional JavaScript -->
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -149,7 +307,12 @@
   <!-- Then Material JavaScript on top of Bootstrap JavaScript -->
   <script src="../material.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/web-streams-polyfill@2.0.2/dist/ponyfill.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
+  <script src="../jsZip/jszip.min.js"></script>
   <script src="../Scripts/map.js"></script>
+  <script src="../Scripts/NewGDC.js"></script>
+  <script src="../Scripts/GDCPackageManager.js"></script>
 </body>
 
 </html>
