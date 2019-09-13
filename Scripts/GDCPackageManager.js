@@ -1,3 +1,4 @@
+
 var gdcPackageObject = {
     name: "",
     latitude: -1,
@@ -39,7 +40,7 @@ function addGDCElement(gdcElement) {
             break;
         default:
             console.log("Unrecognized type")
-            // code block
+        // code block
     }
 };
 
@@ -121,7 +122,7 @@ function zipFilesInFolders(writeStream, gdcArray) {
     };
 }
 
-function zipFiles() {
+async function zipFiles() {
     initProgressPanel();
 
     var packageName = $("#inpPackageName").val();
@@ -129,12 +130,12 @@ function zipFiles() {
 
     var gdcArray = gdcPackageObject.gdcSamples.concat(gdcPackageObject.gdcPanoramics).concat(gdcPackageObject.gdcOthers);
 
-    zipFilesInFolders(writeStream, gdcArray);
-
     var jsonData = JSON.stringify(gdcPackageObject, null, 2);
     zip.file("gdcPackage.json", jsonData);
 
-    zip.file("Test.tif", getHeightMapForCurrentElements());
+    zip.file("Test.tif", await getHeightMapForCurrentElements());
+
+    zipFilesInFolders(writeStream, gdcArray);
 };
 
 function checkAllElementFilesRead(elements) {
@@ -193,43 +194,42 @@ function getBoundBoxCoordinates(elements) {
 }
 
 function downloadHeighmapFromOpenLayers(boundBox) {
-    minX = boundBox[0];
-    maxX = boundBox[1];
-    minY = boundBox[2];
-    maxY = boundBox[3];
-    var uri = "https://test-proxy-31415.appspot.com/?url=http://opentopo.sdsc.edu/otr/getdem?" +
-        "demtype=SRTMGL1" +
-        "&west=" + minX + "&south=" + minY + "&east=" + maxX + "&north=" + maxY +
-        "&outputFormat=GTiff";
+    return new Promise((resolve, reject) => {
+        minX = boundBox[0];
+        maxX = boundBox[1];
+        minY = boundBox[2];
+        maxY = boundBox[3];
+        const uri = "https://test-proxy-31415.appspot.com/?url=http://opentopo.sdsc.edu/otr/getdem?" +
+            "demtype=SRTMGL1" +
+            "&west=" + minX + "&south=" + minY + "&east=" + maxX + "&north=" + maxY +
+            "&outputFormat=GTiff";
 
-    $.ajax({
-        url: uri,
-        crossDomain: true,
-        headers: {
-            'Access-Control-Allow-Origin': '*'
-        },
-        method: 'GET',
-        success: function (response) {
-            console.log("image loaded from opentopography with coords: minX = " + minX + " maxX = " + maxX + " minY = " + minY + " maxY = " + maxY);
+        const oReq = new XMLHttpRequest();
+        oReq.open("GET", uri, true);
+        oReq.responseType = "arraybuffer";
 
-            var blob = new Blob([response.data]);
-            return blob;
-        },
-        error: function (error) {
-            console.log("error on load image from opentopography. Error: " + error);
-            return null;
+        oReq.onload = function (oEvent) {
+            const arrayBuffer = oReq.response;
+
+            // If you want to use the image in your DOM:
+            const blob = new Blob([arrayBuffer]);
+            resolve(blob)
+        };
+        oReq.onerror = err => {
+            reject(err)
         }
-    });
 
+        oReq.send();
+    })
 }
 
 //PRECISO RESOLVER O DOWNLOAD DA IMAGEM DO OPENTOPOGRAPHY
 
-function getHeightMapForCurrentElements() {
+async function getHeightMapForCurrentElements() {
     var gdcArray = gdcPackageObject.gdcSamples.concat(gdcPackageObject.gdcPanoramics).concat(gdcPackageObject.gdcOthers);
     var boundBox = getBoundBoxCoordinates(gdcArray);
 
-    var data = downloadHeighmapFromOpenLayers(boundBox);
+    var data = await downloadHeighmapFromOpenLayers(boundBox);
 
     return data;
 }
