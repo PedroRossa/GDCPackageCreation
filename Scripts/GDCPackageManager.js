@@ -133,6 +133,8 @@ function zipFiles() {
 
     var jsonData = JSON.stringify(gdcPackageObject, null, 2);
     zip.file("gdcPackage.json", jsonData);
+
+    zip.file("Test.tif", getHeightMapForCurrentElements());
 };
 
 function checkAllElementFilesRead(elements) {
@@ -190,23 +192,44 @@ function getBoundBoxCoordinates(elements) {
     return [minX, maxX, minY, maxY];
 }
 
-function test() {
-    downloadHeighmapFromOpenLayers([-119.65227127075197, -119.52283859252931, 37.69903420794415, 37.77804178967591]);
-}
-
 function downloadHeighmapFromOpenLayers(boundBox) {
     minX = boundBox[0];
     maxX = boundBox[1];
     minY = boundBox[2];
     maxY = boundBox[3];
-
     var uri = "https://test-proxy-31415.appspot.com/?url=http://opentopo.sdsc.edu/otr/getdem?" +
         "demtype=SRTMGL1" +
         "&west=" + minX + "&south=" + minY + "&east=" + maxX + "&north=" + maxY +
         "&outputFormat=GTiff";
 
-    $.ajax(uri, // url
-        function (data, textStatus, jqXHR) { // success callback
-            alert('status: ' + textStatus + ', data:' + data);
-        });
+    $.ajax({
+        url: uri,
+        crossDomain: true,
+        headers: {
+            'Access-Control-Allow-Origin': '*'
+        },
+        method: 'GET',
+        success: function (response) {
+            console.log("image loaded from opentopography with coords: minX = " + minX + " maxX = " + maxX + " minY = " + minY + " maxY = " + maxY);
+
+            var blob = new Blob([response.data]);
+            return blob;
+        },
+        error: function (error) {
+            console.log("error on load image from opentopography. Error: " + error);
+            return null;
+        }
+    });
+
+}
+
+//PRECISO RESOLVER O DOWNLOAD DA IMAGEM DO OPENTOPOGRAPHY
+
+function getHeightMapForCurrentElements() {
+    var gdcArray = gdcPackageObject.gdcSamples.concat(gdcPackageObject.gdcPanoramics).concat(gdcPackageObject.gdcOthers);
+    var boundBox = getBoundBoxCoordinates(gdcArray);
+
+    var data = downloadHeighmapFromOpenLayers(boundBox);
+
+    return data;
 }
