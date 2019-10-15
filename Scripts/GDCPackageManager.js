@@ -1,4 +1,3 @@
-
 var gdcPackageObject = {
   name: "",
   latitude: -1,
@@ -26,7 +25,6 @@ var gdcElement = {
   type: gdcTypeEnum
 };
 
-<<<<<<< HEAD
 function addGDC(gdc) {
   gdcPackageObject.gdcs.push(gdc);
 }
@@ -35,27 +33,6 @@ function addGDCElement(gdcList, gdcElement) {
   gdcElement.relativePath = "GDC/" + gdcElement.file.name;
   gdcList.push(gdcElement);
 }
-=======
-function addGDCElement(gdcElement) {
-    switch (gdcElement.type) {
-        case gdcTypeEnum.SAMPLE:
-            gdcElement.relativePath = "Samples/" + gdcElement.file.name;
-            gdcPackageObject.gdcSamples.push(gdcElement);
-            break;
-        case gdcTypeEnum.PANORAMIC:
-            gdcElement.relativePath = "Panoramics/" + gdcElement.file.name;
-            gdcPackageObject.gdcPanoramics.push(gdcElement);
-            break;
-        case gdcTypeEnum.OTHER:
-            gdcElement.relativePath = "Others/" + gdcElement.file.name;
-            gdcPackageObject.gdcOthers.push(gdcElement);
-            break;
-        default:
-            console.log("Unrecognized type")
-        // code block
-    }
-};
->>>>>>> f79f7baf6caa0eae732a2eb5c02bb7cb34c259bb
 
 const streamSaver = window.streamSaver;
 const zip = new JSZip();
@@ -138,11 +115,7 @@ function zipFilesInFolders(writeStream, gdcArray) {
 }
 
 async function zipFiles() {
-<<<<<<< HEAD
   initProgressPanel();
-=======
-    initProgressPanel();
->>>>>>> f79f7baf6caa0eae732a2eb5c02bb7cb34c259bb
 
   var packageName = $("#inpPackageName").val();
   const writeStream = streamSaver.createWriteStream(packageName + ".zip");
@@ -151,7 +124,6 @@ async function zipFiles() {
     .concat(gdcPackageObject.gdcPanoramics)
     .concat(gdcPackageObject.gdcOthers);
 
-<<<<<<< HEAD
   var jsonData = JSON.stringify(gdcPackageObject, null, 2);
   zip.file("gdcPackage.json", jsonData);
 
@@ -161,15 +133,6 @@ async function zipFiles() {
 
   zipFilesInFolders(writeStream, gdcArray);
 }
-=======
-    var jsonData = JSON.stringify(gdcPackageObject, null, 2);
-    zip.file("gdcPackage.json", jsonData);
-
-    zip.file("Test.tif", await getHeightMapForCurrentElements());
-
-    zipFilesInFolders(writeStream, gdcArray);
-};
->>>>>>> f79f7baf6caa0eae732a2eb5c02bb7cb34c259bb
 
 function checkAllElementFilesRead(elements) {
   return new Promise((resolve, reject) => {
@@ -233,7 +196,6 @@ function getBoundBoxCoordinates(elements) {
   return [minX, maxX, minY, maxY];
 }
 
-<<<<<<< HEAD
 async function downloadHeighmapFromOpenLayers(boundBox) {
   minX = boundBox[0];
   maxX = boundBox[1];
@@ -280,42 +242,11 @@ async function downloadHeighmapFromOpenLayers(boundBox) {
       return null;
     }
   });
-=======
-function downloadHeighmapFromOpenLayers(boundBox) {
-    return new Promise((resolve, reject) => {
-        minX = boundBox[0];
-        maxX = boundBox[1];
-        minY = boundBox[2];
-        maxY = boundBox[3];
-        const uri = "https://test-proxy-31415.appspot.com/?url=http://opentopo.sdsc.edu/otr/getdem?" +
-            "demtype=SRTMGL1" +
-            "&west=" + minX + "&south=" + minY + "&east=" + maxX + "&north=" + maxY +
-            "&outputFormat=GTiff";
-
-        const oReq = new XMLHttpRequest();
-        oReq.open("GET", uri, true);
-        oReq.responseType = "arraybuffer";
-
-        oReq.onload = function (oEvent) {
-            const arrayBuffer = oReq.response;
-
-            // If you want to use the image in your DOM:
-            const blob = new Blob([arrayBuffer]);
-            resolve(blob)
-        };
-        oReq.onerror = err => {
-            reject(err)
-        }
-
-        oReq.send();
-    })
->>>>>>> f79f7baf6caa0eae732a2eb5c02bb7cb34c259bb
 }
 
 //PRECISO RESOLVER O DOWNLOAD DA IMAGEM DO OPENTOPOGRAPHY
 
 async function getHeightMapForCurrentElements() {
-<<<<<<< HEAD
   var gdcArray = gdcPackageObject.gdcSamples
     .concat(gdcPackageObject.gdcPanoramics)
     .concat(gdcPackageObject.gdcOthers);
@@ -323,12 +254,6 @@ async function getHeightMapForCurrentElements() {
 
   var data = await downloadHeighmapFromOpenLayers(boundBox);
   console.log("data", data);
-=======
-    var gdcArray = gdcPackageObject.gdcSamples.concat(gdcPackageObject.gdcPanoramics).concat(gdcPackageObject.gdcOthers);
-    var boundBox = getBoundBoxCoordinates(gdcArray);
-
-    var data = await downloadHeighmapFromOpenLayers(boundBox);
->>>>>>> f79f7baf6caa0eae732a2eb5c02bb7cb34c259bb
 
   return data;
 }
