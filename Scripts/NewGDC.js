@@ -1,5 +1,5 @@
 var currentDragFile;
-var currentGdcType;
+var currentGDC = [];
 
 function showDropedFileDiv(fileName) {
     $("#DragDropDiv").css("display", "none");
@@ -46,66 +46,61 @@ function dragOverHandler(ev) {
     ev.preventDefault();
 };
 
-function setCurrentGdcType(gdcType) {
-    currentGdcType = gdcType;
-};
-
 function saveGDCElement() {
     var element = {
         name: $("#inpElementName").val(),
         description: $("#inpElementDescription").val(),
         latitude: $("#inpElementLatitude").val(),
         longitude: $("#inpElementLongitude").val(),
-        file: currentDragFile,
-        type: currentGdcType
+        type: $("#inpTypeSelection").children("option:selected").val(),
+        file: currentDragFile
     };
 
-    addGDCElement(element);
+    addGDCElement(currentGDC, element);
     clearFields();
-    loadSamplesTable(currentGdcType);
+    loadGDCTable();
     $('#addElementModal').modal('hide');
 };
 
-function loadSamplesTable(gdcType) {
-    switch (gdcType) {
-        case gdcTypeEnum.SAMPLE: {
-            var table = $("#samplesTable");
-            var tableBody = $("#samplesTable tbody");
+function saveNewGDC() {
+    addGDC(currentGDC);
+    loadPackageTable();
+    $('#addGDCModal').modal('hide');
+    currentGDC = [];
+}
 
-            tableBody.empty();
+function loadPackageTable() {
+    var table = $("#GDCTable");
+    var tableBody = $("#GDCTable tbody");
 
-            for (i = 0; i < gdcPackageObject.gdcSamples.length; i++) {
-                addElementOnTable(table, gdcPackageObject.gdcSamples[i]);
-            }
-            break;
-        }
-        case gdcTypeEnum.PANORAMIC: {
-            var table = $("#panoramicsTable");
-            var tableBody = $("#panoramicsTable tbody");
+    tableBody.empty();
 
-            tableBody.empty();
+    for (i = 0; i < gdcPackageObject.gdcs.length; i++) {
+        addElementOnTable(table, gdcPackageObject.gdcs[i]);
+    }
+}
 
-            for (i = 0; i < gdcPackageObject.gdcPanoramics.length; i++) {
-                addElementOnTable(table, gdcPackageObject.gdcPanoramics[i]);
-            }
-            break;
-        }
-        case gdcTypeEnum.OTHER: {
-            var table = $("#othersTable");
-            var tableBody = $("#othersTable tbody");
+function loadGDCTable() {
+    var table = $("#ElementsTable");
+    var tableBody = $("#ElementsTable tbody");
 
-            tableBody.empty();
+    tableBody.empty();
 
-            for (i = 0; i < gdcPackageObject.gdcOthers.length; i++) {
-                addElementOnTable(table, gdcPackageObject.gdcOthers[i]);
-            }
-            break;
-        }
-        default:
-            console.log("Unknow gdcType");
-            break;
+    for (i = 0; i < currentGDC.length; i++) {
+        addGDCOnTable(table, currentGDC[i]);
     }
 };
+
+function addGDCOnTable(table, gdc) {
+    var markup =
+        "<tr>" +
+        "<td>" + gdc.name + "</td>" +
+        "<td>" + gdc.description + "</td>" +
+        "<td>" + gdc.latitude + "</td>" +
+        "<td>" + gdc.longitude + "</td>" +
+        "</tr>";
+    table.append(markup);
+}
 
 function addElementOnTable(table, element) {
     var markup =
@@ -114,6 +109,7 @@ function addElementOnTable(table, element) {
         "<td>" + element.description + "</td>" +
         "<td>" + element.latitude + "</td>" +
         "<td>" + element.longitude + "</td>" +
+        "<td>" + element.type + "</td>" +
         "<td>" + element.file.name + "</td>" +
         "</tr>";
     table.append(markup);
@@ -124,6 +120,7 @@ function clearFields() {
     $("#inpElementDescription").val("");
     $("#inpElementLatitude").val("");
     $("#inpElementLongitude").val("");
+    $("#inpTypeSelection").children("option:selected").val("Sample");
 
     //load card to drag file
     showDragDropDiv();

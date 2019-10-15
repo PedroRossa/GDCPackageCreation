@@ -48,6 +48,7 @@
     </a>
   </nav>
 
+  <!-- Package Screen -->
   <div class="container">
     <div class="row">
       <div class="col">
@@ -78,93 +79,28 @@
           </div>
           <div class="card text-center mt-3">
             <div class="card-header">
-              <ul class="nav nav-tabs" id="ElementsTab" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link active" id="tabSamples" data-toggle="tab" href="#tabSamplesContent" role="tab"
-                    aria-controls="Samples" aria-selected="true">Samples</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="tabPanoramics" data-toggle="tab" href="#tabPanoramicsContent" role="tab"
-                    aria-controls="Panoramics" aria-selected="false">Panoramics</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="tabOthers" data-toggle="tab" href="#tabOthersContent" role="tab"
-                    aria-controls="Others" aria-selected="false">Others</a>
-                </li>
-              </ul>
               <!-- Elements -->
-              <div class="tab-content" id="ElementsTabContent">
-                <!-- Samples -->
-                <div class="tab-pane fade show active" id="tabSamplesContent" role="tabpanel"
-                  aria-labelledby="Samples-tab">
+              <div class="tab-content" id="GDCsTabContent">
+                <!-- GDC's -->
+                <div class="tab-pane fade show active" id="tabGDCContent" role="tabpanel" aria-labelledby="Samples-tab">
                   <div class="card-body">
-                    <h5 class="card-title">Add Samples to package</h5>
-                    <table id="samplesTable" class="table table-sm">
+                    <h5 class="card-title">GDC's Package</h5>
+                    <table id="GDCTable" class="table table-sm">
                       <thead>
                         <tr>
                           <th scope="col">Name</th>
                           <th scope="col">Description</th>
                           <th scope="col">Latitude</th>
                           <th scope="col">Longitude</th>
-                          <th scope="col">File</th>
+                          <!-- AQUI tenho que adicionar uma coluna que seja botão pra ver todos os arquivos do gdc -->
                         </tr>
                       </thead>
                       <tbody>
                       </tbody>
                     </table>
-                    <!-- ADD Sample Modal Loaded -->
-                    <button id="btnAddSample" class="btn btn-float  btn-primary float-right" type="button"
-                      data-toggle="modal" data-target="#addElementModal"
-                      onclick="setCurrentGdcType(gdcTypeEnum.SAMPLE)">
-                      <i class="material-icons">add</i>
-                    </button>
-                  </div>
-                </div>
-                <!-- Panoramics -->
-                <div class="tab-pane fade" id="tabPanoramicsContent" role="tabpanel" aria-labelledby="Panoramics-tab">
-                  <div class="card-body">
-                    <h5 class="card-title">Add Panoramic images (360) to package</h5>
-                    <table id="panoramicsTable" class="table table-sm">
-                      <thead>
-                        <tr>
-                          <th scope="col">Name</th>
-                          <th scope="col">Description</th>
-                          <th scope="col">Latitude</th>
-                          <th scope="col">Longitude</th>
-                          <th scope="col">File</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                    <!-- ADD Panoramic Modal Loaded -->
-                    <button id="btnAddPanoramic" class="btn btn-float  btn-primary float-right" type="button"
-                      data-toggle="modal" data-target="#addElementModal"
-                      onclick="setCurrentGdcType(gdcTypeEnum.PANORAMIC)">
-                      <i class="material-icons">add</i>
-                    </button>
-                  </div>
-                </div>
-                <!-- Others -->
-                <div class="tab-pane fade" id="tabOthersContent" role="tabpanel" aria-labelledby="Others-tab">
-                  <div class="card-body">
-                    <h5 class="card-title">Add Other type of files to package</h5>
-                    <table id="othersTable" class="table table-sm">
-                      <thead>
-                        <tr>
-                          <th scope="col">Name</th>
-                          <th scope="col">Description</th>
-                          <th scope="col">Latitude</th>
-                          <th scope="col">Longitude</th>
-                          <th scope="col">File</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                    <!-- ADD Others Modal Loaded -->
-                    <button id="btnAddOthers" class="btn btn-float  btn-primary float-right" type="button"
-                      data-toggle="modal" data-target="#addElementModal" onclick="setCurrentGdcType(gdcTypeEnum.OTHER)">
+                    <!-- ADD GDC Modal Loaded -->
+                    <button id="btnAddGDC" class="btn btn-float  btn-primary float-right" type="button"
+                      data-toggle="modal" data-target="#addGDCModal">
                       <i class="material-icons">add</i>
                     </button>
                   </div>
@@ -225,13 +161,12 @@
     </div>
   </div>
 
-  <!-- Add Element Modal -->
-  <div class="modal fade" id="addElementModal" tabindex="-1" role="dialog" aria-labelledby="AddNewElement"
-    aria-hidden="true">
+  <!-- Add GDC Modal -->
+  <div class="modal fade" id="addGDCModal" tabindex="-1" role="dialog" aria-labelledby="AddNewGDC" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="addElementModalTitle">Add New Element</h5>
+          <h5 class="modal-title" id="addGDCModalTitle">Add New GDC</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -239,62 +174,155 @@
         <div class="modal-body">
           <div class="form-group">
             <div class="floating-label">
-              <label for="inpPackageName">Name</label>
+              <label for="inpGDCName">Name</label>
+              <input class="form-control" id="inpGDCName" placeholder="Set GDC Name" type="text">
+            </div>
+            <div class="floating-label">
+              <label for="inpGDCDescription">Description</label>
+              <input class="form-control" id="inpGDCDescription" placeholder="Set GDC Description" type="text">
+            </div>
+            <div class="row mt-3">
+              <div class="col">
+                <div class="floating-label">
+                  <label for="inpGDCLatitude">Latitude</label>
+                  <input class="form-control" id="inpGDCLatitude" placeholder="" type="number">
+                </div>
+              </div>
+              <div class="col">
+                <div class="floating-label">
+                  <label for="inpGDCLongitude">Longitude</label>
+                  <input class="form-control" id="inpGDCLongitude" placeholder="" type="number" required>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Elements table -->
+          <div class="card text-center mt-3">
+            <div class="card-header">
+              <div class="tab-content" id="ElementsTabContent">
+                <div class="tab-pane fade show active" id="tabElementsContent" role="tabpanel"
+                  aria-labelledby="Samples-tab">
+                  <div class="card-body">
+                    <h5 class="card-title">Elements</h5>
+                    <table id="ElementsTable" class="table table-sm">
+                      <thead>
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Description</th>
+                          <th scope="col">Latitude</th>
+                          <th scope="col">Longitude</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">File</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
+                    <!-- ADD GDC Modal Loaded -->
+                    <button id="btnAddGDC" class="btn btn-float  btn-primary float-right" type="button"
+                      data-toggle="modal" data-target="#addElementModal" onclick="">
+                      <i class="material-icons">add</i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button id="btnSaveElementModal" type="button" class="btn btn-primary"
+              onclick="saveGDCElement()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Add Element Modal -->
+  <div class="modal fade" id="addElementModal" tabindex="-1" role="dialog" aria-labelledby="AddNewElement"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addElementModalTitle">Add Element to GDC</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="floating-label">
+              <label for="inpElementName">Name</label>
               <input class="form-control" id="inpElementName" placeholder="Set Element Name" type="text">
             </div>
             <div class="floating-label">
-              <label for="inpPackageName">Description</label>
+              <label for="inpElementDescription">Description</label>
               <input class="form-control" id="inpElementDescription" placeholder="Set Element Description" type="text">
             </div>
             <div class="row mt-3">
               <div class="col">
                 <div class="floating-label">
-                  <label for="inpLatitude">Latitude</label>
+                  <label for="inpElementLatitude">Latitude</label>
                   <input class="form-control" id="inpElementLatitude" placeholder="" type="number">
                 </div>
               </div>
               <div class="col">
                 <div class="floating-label">
-                  <label for="inpLongitude">Longitude</label>
+                  <label for="inpElementLongitude">Longitude</label>
                   <input class="form-control" id="inpElementLongitude" placeholder="" type="number" required>
                 </div>
               </div>
             </div>
           </div>
-          <div id="drop_zone" class="mt-3" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-            <div class="card">
-              <div class="card-body">
-                <div id="DragDropDiv">
-                  <div class="row justify-content-center mt-3">
-                    <i class="material-icons text-primary md-48">cloud_upload</i>
-                  </div>
-                  <div class=" row justify-content-center mt-3">
-                    <p class="font-weight-bold"> Drag and drop a file Here</p>
-                  </div>
-                  <br />
-                  <div class=" row justify-content-center">
-                    <p class="font-italic">or</p>
-                  </div>
-                  <div class="row justify-content-center my-3 mx-4">
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="customFile">
-                      <label class="custom-file-label" for="customFile">Browse File</label>
+          <div class="col">
+            <div class="floating-label">
+              <label for="inpTypeSelection">Type</label>
+              <select class="form-control" id="inpTypeSelection">
+                <option disabled selected value> -- select an option -- </option>
+                <option>Sample</option>
+                <option>Panoramic</option>
+                <option>File</option>
+              </select>
+            </div>
+
+            <div id="drop_zone" class="mt-3" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+              <div class="card">
+                <div class="card-body">
+                  <div id="DragDropDiv">
+                    <div class="row justify-content-center mt-3">
+                      <i class="material-icons text-primary md-48">cloud_upload</i>
+                    </div>
+                    <div class=" row justify-content-center mt-3">
+                      <p class="font-weight-bold"> Drag and drop a file Here</p>
+                    </div>
+                    <br />
+                    <div class=" row justify-content-center">
+                      <p class="font-italic">or</p>
+                    </div>
+                    <div class="row justify-content-center my-3 mx-4">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Browse File</label>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div id="DropedFileDiv" class="text-center align-middle" style="display: none;">
-                  <a class="chip chip-action" href="#">
-                    <i class="chip-icon">Z</i>
-                    <p id="elementSelectedFileName" class="text-center">FileNameHere.zip</p>
-                  </a>
+                  <div id="DropedFileDiv" class="text-center align-middle" style="display: none;">
+                    <a class="chip chip-action" href="#">
+                      <i class="chip-icon">Z</i>
+                      <p id="elementSelectedFileName" class="text-center">FileNameHere.zip</p>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button id="btnSaveElementModal" type="button" class="btn btn-primary"
-              onclick="saveGDCElement()">Save</button>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button id="btnSaveElementModal" type="button" class="btn btn-primary"
+                onclick="saveGDCElement()">Save</button>
+            </div>
           </div>
         </div>
       </div>
