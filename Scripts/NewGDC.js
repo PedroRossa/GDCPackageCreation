@@ -1,5 +1,13 @@
 var currentDragFile;
-var currentGDC = [];
+
+var currentGDC = {
+    name: "",
+    description: "",
+    latitude: -1,
+    longitude: -1,
+    elements: []
+};
+
 
 function showDropedFileDiv(fileName) {
     $("#DragDropDiv").css("display", "none");
@@ -52,21 +60,27 @@ function saveGDCElement() {
         description: $("#inpElementDescription").val(),
         latitude: $("#inpElementLatitude").val(),
         longitude: $("#inpElementLongitude").val(),
-        type: $("#inpTypeSelection").children("option:selected").val(),
+        type: $("#inpTypeSelection").find(":selected").text(),
         file: currentDragFile
     };
 
-    addGDCElement(currentGDC, element);
-    clearFields();
+    currentGDC.elements.push(element);
+    clearGDCElementModal();
     loadGDCTable();
     $('#addElementModal').modal('hide');
 };
 
 function saveNewGDC() {
+    currentGDC.name = $("#inpGDCName").val();
+    currentGDC.description = $("#inpGDCDescription").val();
+    currentGDC.latitude = $("#inpGDCLatitude").val();
+    currentGDC.longitude = $("#inpGDCLongitude").val();
+
     addGDC(currentGDC);
+    clearGDCModal();
+    clearCurrentGDC();
     loadPackageTable();
     $('#addGDCModal').modal('hide');
-    currentGDC = [];
 }
 
 function loadPackageTable() {
@@ -76,7 +90,7 @@ function loadPackageTable() {
     tableBody.empty();
 
     for (i = 0; i < gdcPackageObject.gdcs.length; i++) {
-        addElementOnTable(table, gdcPackageObject.gdcs[i]);
+        addGDCOnTable(table, gdcPackageObject.gdcs[i]);
     }
 }
 
@@ -86,8 +100,8 @@ function loadGDCTable() {
 
     tableBody.empty();
 
-    for (i = 0; i < currentGDC.length; i++) {
-        addGDCOnTable(table, currentGDC[i]);
+    for (i = 0; i < currentGDC.elements.length; i++) {
+        addGDCOnTable(table, currentGDC.elements[i]);
     }
 };
 
@@ -115,7 +129,9 @@ function addElementOnTable(table, element) {
     table.append(markup);
 };
 
-function clearFields() {
+//TODO: Create a function to open modal with data when click in a row
+
+function clearGDCElementModal() {
     $("#inpElementName").val("");
     $("#inpElementDescription").val("");
     $("#inpElementLatitude").val("");
@@ -124,4 +140,25 @@ function clearFields() {
 
     //load card to drag file
     showDragDropDiv();
+}
+
+function clearGDCModal() {
+    $("#inpGDCName").val("");
+    $("#inpGDCDescription").val("");
+    $("#inpGDCLatitude").val("");
+    $("#inpGDCLongitude").val("");
+
+    //Clear element table
+    var tableBody = $("#ElementsTable tbody");
+    tableBody.empty();
+}
+
+function clearCurrentGDC() {
+    currentGDC = {
+        name: "",
+        description: "",
+        latitude: -1,
+        longitude: -1,
+        elements: []
+    };
 }

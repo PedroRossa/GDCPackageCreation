@@ -41,78 +41,87 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-light bg-light">
+  <nav class="navbar navbar-light" style="background-color: #F5F5F5;">
     <a class="navbar-brand" href="#">
-      <i class="material-icons mr-2" width="30" height="30" class="d-inline-block align-top" alt="">explore</i>
+      <img src="../Resources/mosisLab.png" width="48" height="48" alt="">
       GDC Package Creation
     </a>
   </nav>
 
-  <!-- Package Screen -->
   <div class="container">
-    <div class="row">
-      <div class="col">
+    <div class="row justify-content-center">
+      <div class="col-6">
+
+        <!-- Package infos -->
         <div class="form-group">
-          <div class="floating-label">
+          <div class="row floating-label mx-1">
             <label for="inpPackageName">Package Name</label>
             <input class="form-control" id="inpPackageName" placeholder="Set the Package Name" type="text">
           </div>
+          <div class="row floating-label mx-1">
+            <label for="inpPackageDescription">Description</label>
+            <input class="form-control" id="inpPackageDescription" placeholder="Set Package Description" type="text">
+          </div>
           <div class="row mt-3">
-            <div class="col">
+            <div class="col-5">
               <div class="floating-label">
                 <label for="inpPackageLatitude">Latitude</label>
-                <input class="form-control" id="inpLatitude" placeholder="" type="text" disabled>
+                <input class="form-control" id="inpPackageLatitude" placeholder="-59.314" type="number" step="0.0001">
               </div>
             </div>
-            <div class="col">
+            <div class="col-5">
               <div class="floating-label">
                 <label for="inpPackageLongitude">Longitude</label>
-                <input class="form-control" id="inpLongitude" placeholder="" type="text" disabled>
+                <input class="form-control" id="inpPackageLongitude" placeholder="-29.314" type="number" step="0.0001">
               </div>
             </div>
-            <div class="col">
+            <div class="col-2">
               <!-- Button trigger modal -->
               <i class="material-icons mt-4 text-center" data-toggle="modal" data-target="#mapModal" alt="">
                 room
               </i>
             </div>
+
           </div>
-          <div class="card text-center mt-3">
-            <div class="card-header">
-              <!-- Elements -->
-              <div class="tab-content" id="GDCsTabContent">
-                <!-- GDC's -->
-                <div class="tab-pane fade show active" id="tabGDCContent" role="tabpanel" aria-labelledby="Samples-tab">
-                  <div class="card-body">
-                    <h5 class="card-title">GDC's Package</h5>
-                    <table id="GDCTable" class="table table-sm">
-                      <thead>
-                        <tr>
-                          <th scope="col">Name</th>
-                          <th scope="col">Description</th>
-                          <th scope="col">Latitude</th>
-                          <th scope="col">Longitude</th>
-                          <!-- AQUI tenho que adicionar uma coluna que seja botão pra ver todos os arquivos do gdc -->
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                    <!-- ADD GDC Modal Loaded -->
-                    <button id="btnAddGDC" class="btn btn-float  btn-primary float-right" type="button"
-                      data-toggle="modal" data-target="#addGDCModal">
-                      <i class="material-icons">add</i>
-                    </button>
-                  </div>
+        </div>
+
+        <!-- GDC's Table -->
+        <div class="card text-center">
+          <div class="card-header">
+            <!-- Elements -->
+            <div class="tab-content" id="GDCsTabContent">
+              <!-- GDC's -->
+              <div class="tab-pane fade show active" id="tabGDCContent" role="tabpanel" aria-labelledby="Samples-tab">
+                <div class="card-body">
+                  <h5 class="card-title">GDC's Package</h5>
+                  <table id="GDCTable" class="table table-sm">
+                    <thead>
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Latitude</th>
+                        <th scope="col">Longitude</th>
+                        <!-- AQUI tenho que adicionar uma coluna que seja botão pra ver todos os arquivos do gdc -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                  <!-- ADD GDC Modal Loaded -->
+                  <button id="btnAddGDC" class="btn btn-float  btn-primary align-middle mt-3" type="button"
+                    data-toggle="modal" data-target="#addGDCModal" onClick="">
+                    <i class="material-icons">add</i>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-          <button type="button" class="btn btn-primary float-right" onclick="zipFiles()">Generate Package</button>
-          <div id="image_div">
-
-          </div>
         </div>
+
+        <button type="button" class="btn btn-primary float-right mt-3" onclick="generatePackage()">Generate
+          Package</button>
+        <!-- <button type="button" class="btn btn-primary" onclick="testOpentopography()">Test
+          Opentopography</button> -->
       </div>
     </div>
   </div>
@@ -185,13 +194,13 @@
               <div class="col">
                 <div class="floating-label">
                   <label for="inpGDCLatitude">Latitude</label>
-                  <input class="form-control" id="inpGDCLatitude" placeholder="" type="number">
+                  <input class="form-control" id="inpGDCLatitude" placeholder="" type="number" step="0.0001">
                 </div>
               </div>
               <div class="col">
                 <div class="floating-label">
                   <label for="inpGDCLongitude">Longitude</label>
-                  <input class="form-control" id="inpGDCLongitude" placeholder="" type="number" required>
+                  <input class="form-control" id="inpGDCLongitude" placeholder="" type="number" step="0.0001">
                 </div>
               </div>
             </div>
@@ -220,7 +229,7 @@
                       </tbody>
                     </table>
                     <!-- ADD GDC Modal Loaded -->
-                    <button id="btnAddGDC" class="btn btn-float  btn-primary float-right" type="button"
+                    <button id="btnAddGDCElement" class="btn btn-float  btn-primary align-middle mt-3" type=" button"
                       data-toggle="modal" data-target="#addElementModal" onclick="">
                       <i class="material-icons">add</i>
                     </button>
@@ -230,10 +239,10 @@
             </div>
           </div>
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button id="btnSaveElementModal" type="button" class="btn btn-primary"
-              onclick="saveGDCElement()">Save</button>
+          <div class="mt-3">
+            <button type="button" class="btn btn-primary mr-auto" data-dismiss="modal">Cancel</button>
+            <button id="btnSaveElementModal" type="button" class="btn btn-primary float-right"
+              onclick="saveNewGDC()">Save</button>
           </div>
         </div>
       </div>
@@ -266,13 +275,13 @@
               <div class="col">
                 <div class="floating-label">
                   <label for="inpElementLatitude">Latitude</label>
-                  <input class="form-control" id="inpElementLatitude" placeholder="" type="number">
+                  <input class="form-control" id="inpElementLatitude" placeholder="" type="number" step="0.0001">
                 </div>
               </div>
               <div class="col">
                 <div class="floating-label">
                   <label for="inpElementLongitude">Longitude</label>
-                  <input class="form-control" id="inpElementLongitude" placeholder="" type="number" required>
+                  <input class="form-control" id="inpElementLongitude" placeholder="" type="number" step="0.0001">
                 </div>
               </div>
             </div>
@@ -299,7 +308,9 @@
                       <p class="font-weight-bold"> Drag and drop a file Here</p>
                     </div>
                     <br />
-                    <div class=" row justify-content-center">
+                    <!-- Make upload button here  -->
+
+                    <!-- <div class=" row justify-content-center">
                       <p class="font-italic">or</p>
                     </div>
                     <div class="row justify-content-center my-3 mx-4">
@@ -307,7 +318,8 @@
                         <input type="file" class="custom-file-input" id="customFile">
                         <label class="custom-file-label" for="customFile">Browse File</label>
                       </div>
-                    </div>
+                    </div> -->
+
                   </div>
                   <div id="DropedFileDiv" class="text-center align-middle" style="display: none;">
                     <a class="chip chip-action" href="#">
@@ -318,9 +330,10 @@
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <button id="btnSaveElementModal" type="button" class="btn btn-primary"
+
+            <div class="mt-3">
+              <button type="button" class="btn btn-primary mr-auto" data-dismiss="modal">Cancel</button>
+              <button id="btnSaveElementModal" type="button" class="btn btn-primary float-right"
                 onclick="saveGDCElement()">Save</button>
             </div>
           </div>

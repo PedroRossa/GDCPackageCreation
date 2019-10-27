@@ -28,8 +28,10 @@ map.on('singleclick', function (evt) {
   var coordinate = evt.coordinate;
 
   selectedPoint.getGeometry().setCoordinates(coordinate);
-  $("#inpLatitude").val(coordinate[0]);
-  $("#inpLongitude").val(coordinate[1]);
+  var latLon = ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326');
+  $("#inpPackageLongitude").val(latLon[0]);
+  $("#inpPackageLatitude").val(latLon[1]);
+  $('.floating-label .custom-select, .floating-label .form-control').floatinglabel();
 });
 
 function setLatLong(inpLat, inpLong) {
